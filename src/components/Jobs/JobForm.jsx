@@ -48,8 +48,8 @@ const JobForm = ({ initialData = {}, onSubmit, isLoading }) => {
           </h3>
           <p className="text-sm text-gray-600 mt-1">Fill in the essential details about the job position</p>
         </div>
-        
-        <div className="p-6 space-y-6">
+
+        <div className="p-6 space-y-6 grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Job Title <span className="text-red-500">*</span>
@@ -116,7 +116,8 @@ const JobForm = ({ initialData = {}, onSubmit, isLoading }) => {
               />
             </div>
           </div>
-
+        </div>
+        <div className='p-6 space-y-6 grid grid-cols-1 md:grid-cols-1 gap-5'>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Job Description <span className="text-red-500">*</span>
@@ -148,7 +149,7 @@ const JobForm = ({ initialData = {}, onSubmit, isLoading }) => {
           </h3>
           <p className="text-sm text-gray-600 mt-1">Define the compensation package for this position</p>
         </div>
-        
+
         <div className="p-6 space-y-5">
           <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
             <label className="flex items-center cursor-pointer">
@@ -172,7 +173,7 @@ const JobForm = ({ initialData = {}, onSubmit, isLoading }) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Minimum Salary
+                    Minimum Salary <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -185,6 +186,7 @@ const JobForm = ({ initialData = {}, onSubmit, isLoading }) => {
                       name="salary.min"
                       value={formData.salary.min}
                       onChange={handleChange}
+                      required
                       className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                       placeholder="e.g., 50000"
                     />
@@ -192,7 +194,7 @@ const JobForm = ({ initialData = {}, onSubmit, isLoading }) => {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Maximum Salary
+                    Maximum Salary <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -205,6 +207,7 @@ const JobForm = ({ initialData = {}, onSubmit, isLoading }) => {
                       name="salary.max"
                       value={formData.salary.max}
                       onChange={handleChange}
+                      required
                       className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                       placeholder="e.g., 100000"
                     />
@@ -212,13 +215,14 @@ const JobForm = ({ initialData = {}, onSubmit, isLoading }) => {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Currency
+                    Currency <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <select
                       name="salary.currency"
                       value={formData.salary.currency}
                       onChange={handleChange}
+                      required
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none bg-white"
                     >
                       <option value="PKR">🇵🇰 PKR - Pakistani Rupee</option>

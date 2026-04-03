@@ -22,7 +22,7 @@ const CreateJob = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-5xl mx-auto">
       <div className="bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Post a New Job</h1>
         <JobForm onSubmit={handleSubmit} isLoading={loading} />

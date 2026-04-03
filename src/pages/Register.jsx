@@ -102,7 +102,7 @@ const Register = () => {
           {/* Role Selection with Styling */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              I am a
+              Role
             </label>
             <div className="relative">
               <select
