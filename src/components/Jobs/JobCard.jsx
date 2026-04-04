@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 
-const JobCard = ({ job, showActions = false, onDelete, onApprove, onReject, isAdmin = false }) => {
+const JobCard = ({ job, showActions = false, onDelete, onApprove, onReject, isAdmin = false, showApplyButtons = false, onViewDetails, }) => {
   // Helper function to get status badge styles
   const getStatusStyles = () => {
-    switch(job.status) {
+    switch (job.status) {
       case 'approved':
         return 'bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 border-green-200';
       case 'rejected':
@@ -17,7 +17,7 @@ const JobCard = ({ job, showActions = false, onDelete, onApprove, onReject, isAd
 
   // Helper function to get status icon
   const getStatusIcon = () => {
-    switch(job.status) {
+    switch (job.status) {
       case 'approved':
         return (
           <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -37,6 +37,20 @@ const JobCard = ({ job, showActions = false, onDelete, onApprove, onReject, isAd
           </svg>
         );
     }
+  };
+
+  const handleApplyNow = () => {
+    // Handle apply now action
+    console.log("Applying for job:", job);
+    // You can integrate your application logic here
+    alert(`Applying for ${job.title} at ${job.company}`);
+  };
+
+  const handleViewDetails = () => {
+    // Handle view details action
+    console.log("Viewing job details:", job);
+    // You can navigate to job details page or open modal
+    alert(`Viewing details for ${job.title}`);
   };
 
   return (
@@ -133,7 +147,7 @@ const JobCard = ({ job, showActions = false, onDelete, onApprove, onReject, isAd
             )}
           </div>
 
-          {/* Action Buttons */}
+          {/* Action Buttons for Admin/User */}
           {showActions && (
             <div className="flex flex-col gap-2 ml-4">
               {!isAdmin && (
@@ -158,7 +172,7 @@ const JobCard = ({ job, showActions = false, onDelete, onApprove, onReject, isAd
                   </button>
                 </>
               )}
-              
+
               {isAdmin && job.status === 'pending' && (
                 <div className="flex flex-col gap-2">
                   <button
@@ -181,6 +195,33 @@ const JobCard = ({ job, showActions = false, onDelete, onApprove, onReject, isAd
                   </button>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Apply Now and View Details Buttons for Home Page */}
+          {showApplyButtons && (
+            <div className="flex flex-col gap-2 ml-4">
+
+              <button
+                onClick={() => onViewDetails(job)}
+                className="inline-flex items-center justify-center px-4 py-2 bg-white border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-200 text-sm font-medium"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                View Details
+              </button>
+
+              <button
+                onClick={handleApplyNow}
+                className="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                Apply Now
+              </button>
             </div>
           )}
         </div>

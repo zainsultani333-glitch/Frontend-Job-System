@@ -17,6 +17,8 @@ const Home = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 10;
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchJobs();
@@ -31,6 +33,12 @@ const Home = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+
+  const handleViewDetails = (job) => {
+    setSelectedJob(job);
+    setShowModal(true);
   };
 
   // 👉 Apply filters ONLY when button clicked
@@ -81,10 +89,10 @@ const Home = () => {
           <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M20 20 L40 20 M20 20 L20 40" stroke="white" strokeWidth="1" fill="none"/>
+                <path d="M20 20 L40 20 M20 20 L20 40" stroke="white" strokeWidth="1" fill="none" />
               </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#pattern)"/>
+            <rect width="100%" height="100%" fill="url(#pattern)" />
           </svg>
         </div>
 
@@ -199,7 +207,11 @@ const Home = () => {
             <div className="space-y-4">
               {currentJobs.map((job, index) => (
                 <div key={job._id} className="animate-fade-in-up" style={{ animationDelay: `${index * 0.05}s` }}>
-                  <JobCard job={job} />
+                  <JobCard
+                    job={job}
+                    showApplyButtons={true}
+                    onViewDetails={handleViewDetails}
+                  />
                 </div>
               ))}
             </div>
@@ -210,11 +222,10 @@ const Home = () => {
                 <button
                   onClick={() => paginate(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className={`px-4 py-2 rounded-lg transition-all ${
-                    currentPage === 1
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`px-4 py-2 rounded-lg transition-all ${currentPage === 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 hover:border-gray-400'
+                    }`}
                 >
                   ← Previous
                 </button>
@@ -232,11 +243,10 @@ const Home = () => {
                         <button
                           key={i}
                           onClick={() => paginate(pageNum)}
-                          className={`w-10 h-10 rounded-lg transition-all ${
-                            currentPage === pageNum
-                              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
-                              : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
-                          }`}
+                          className={`w-10 h-10 rounded-lg transition-all ${currentPage === pageNum
+                            ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
+                            : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                            }`}
                         >
                           {pageNum}
                         </button>
@@ -254,11 +264,10 @@ const Home = () => {
                 <button
                   onClick={() => paginate(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className={`px-4 py-2 rounded-lg transition-all ${
-                    currentPage === totalPages
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`px-4 py-2 rounded-lg transition-all ${currentPage === totalPages
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300 hover:border-gray-400'
+                    }`}
                 >
                   Next →
                 </button>
@@ -267,6 +276,78 @@ const Home = () => {
           </>
         )}
       </div>
+
+      {showModal && selectedJob && (
+        <div className="fixed inset-0 bg-black/50 bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl p-8 relative animate-fadeIn border border-gray-100">
+
+            {/* Close Button */}
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-all duration-200"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Title */}
+            <h2 className="text-3xl font-bold text-gray-900 mb-3 pr-6">{selectedJob.title}</h2>
+
+            {/* Company & Location */}
+            <div className="flex items-center gap-3 mb-5">
+              <p className="text-purple-700 font-semibold flex items-center gap-1">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                {selectedJob.company}
+              </p>
+              <span className="text-gray-300">•</span>
+              <p className="text-gray-600 flex items-center gap-1">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {selectedJob.location}
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 my-5"></div>
+
+            {/* Description */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                </svg>
+                Job Description
+              </h3>
+              <p className="text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-lg">
+                {selectedJob.description}
+              </p>
+            </div>
+
+            {/* Salary */}
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+              <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Compensation
+              </h3>
+              {selectedJob.salary?.isNegotiable ? (
+                <p className="text-purple-700 font-semibold text-lg">💰 Negotiable</p>
+              ) : (
+                <p className="text-green-700 font-semibold text-lg">
+                  💰 {selectedJob.salary?.currency} {selectedJob.salary?.min?.toLocaleString()} - {selectedJob.salary?.max?.toLocaleString()}
+                </p>
+              )}
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* FOOTER */}
       <footer className="bg-gray-800 text-gray-300 py-12 mt-12">
