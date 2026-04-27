@@ -40,7 +40,7 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const response = await api.post('/auth/register', formData);
+      const response = await api.post('/api/auth/register', formData);
       // Removed token and user storage to force login
       // localStorage.setItem('token', response.data.token);
       // localStorage.setItem('user', JSON.stringify(response.data.user));
