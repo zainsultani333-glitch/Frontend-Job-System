@@ -38,25 +38,25 @@ api.interceptors.response.use(
 
 // Auth APIs
 export const authAPI = {
-  register: (userData) => api.post('api/auth/register', userData),
-  login: (email, password) => api.post('api/auth/login', { email, password }).then(res => res.data),
+  register: (userData) => api.post('/api/auth/register', userData),
+  login: (email, password) => api.post('/api/auth/login', { email, password }).then(res => res.data),
 };
 
 // Job APIs
 export const jobAPI = {
-  getAllApproved: () => api.get('api/jobs').then(res => res.data),
-  getMyJobs: () => api.get('api/jobs/my').then(res => res.data),
-  createJob: (jobData) => api.post('api/jobs', jobData).then(res => res.data),
-  updateJob: (id, jobData) => api.put(`api/jobs/${id}`, jobData).then(res => res.data),
-  deleteJob: (id) => api.delete(`api/jobs/${id}`).then(res => res.data),
+  getAllApproved: () => api.get('/api/jobs').then(res => res.data),
+  getMyJobs: () => api.get('/api/jobs/my').then(res => res.data),
+  createJob: (jobData) => api.post('/api/jobs', jobData).then(res => res.data),
+  updateJob: (id, jobData) => api.put(`/api/jobs/${id}`, jobData).then(res => res.data),
+  deleteJob: (id) => api.delete(`/api/jobs/${id}`).then(res => res.data),
 };
 
 // Admin APIs
 export const adminAPI = {
-  getAllUsers: () => api.get('api/admin/users').then(res => res.data),
-  getAllJobs: () => api.get('api/admin/jobs').then(res => res.data),
-  approveJob: (id) => api.put(`api/admin/approve/${id}`).then(res => res.data),
-  rejectJob: (id) => api.put(`api/admin/reject/${id}`).then(res => res.data),
+  getAllUsers: () => api.get('/api/admin/users').then(res => res.data),
+  getAllJobs: () => api.get('/api/admin/jobs').then(res => res.data),
+  approveJob: (id) => api.put(`/api/admin/approve/${id}`).then(res => res.data),
+  rejectJob: (id) => api.put(`/api/admin/reject/${id}`).then(res => res.data),
 };
 
 export default api;
